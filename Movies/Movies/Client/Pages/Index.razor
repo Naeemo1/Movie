@@ -1,7 +1,54 @@
 ﻿@page "/"
 
-<h1>Hello, world!</h1>
 
-Welcome to your new app.
+<p>MyName Is @Upper(name)</p>
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+<p>MyName Is @name.ToUpper()</p>
+
+<p> 2 + 2 = @(2+2)</p>
+
+<button @onclick="@Print">Click Me</button>
+
+<button @onclick="@(() => Console.WriteLine("Hi!"))">Click Me2</button>
+
+@foreach (var item in movies)
+{
+    <p>Title: @item.Title</p>
+    <p>Release Date: @item.ReleaseDate.ToString("dd MM yyyy")</p>
+}
+
+<br/>
+<br/>
+
+@for (int i = 0; i < movies.Count; i++)
+{
+    @(i + 1)<p>Title: @movies[i].Title</p>
+    <p>Release Date: @movies[i].ReleaseDate.ToString("dd MM yyyy")</p>
+}
+
+@code{
+
+    List<Movie> movies;
+
+    protected override void OnInitialized()
+    {
+        movies = new List<Movie>()
+        {
+            new Movie(){ReleaseDate = new DateTime(2019,5,5), Title = "Spider-Man" },
+            new Movie(){ReleaseDate = new DateTime(2017,5,5), Title = "Iron-Man" }
+
+        };
+    }
+
+    string name = "Naeem";
+
+    string Upper(string value) => value.ToUpper();
+
+    void Print()
+    {
+        Console.WriteLine("Hey!");
+    }
+
+}
+
+
