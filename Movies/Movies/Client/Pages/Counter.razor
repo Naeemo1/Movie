@@ -6,6 +6,12 @@
 
 <button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
 
+<TextBoxComponent style="color:red;" />
+
+@*DataBind*@
+<input type="text" @bind="currentCount"/>
+
+
 @code {
 
     private int currentCount = 0;

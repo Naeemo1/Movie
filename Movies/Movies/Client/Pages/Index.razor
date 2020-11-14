@@ -1,7 +1,7 @@
 ﻿@page "/"
 
 
-<p>MyName Is @Upper(name)</p>
+@*<p>MyName Is @Upper(name)</p>
 
 <p>MyName Is @name.ToUpper()</p>
 
@@ -9,36 +9,41 @@
 
 <button @onclick="@Print">Click Me</button>
 
-<button @onclick="@(() => Console.WriteLine("Hi!"))">Click Me2</button>
+<button @onclick="@(() => Console.WriteLine("Hi!"))">Click Me2</button>*@
 
-@foreach (var item in movies)
-{
-    <p>Title: @item.Title</p>
-    <p>Release Date: @item.ReleaseDate.ToString("dd MM yyyy")</p>
-}
+
+<MoviesList Movies="movies" />
 
 <br/>
-<br/>
 
-@for (int i = 0; i < movies.Count; i++)
-{
-    @(i + 1)<p>Title: @movies[i].Title</p>
-    <p>Release Date: @movies[i].ReleaseDate.ToString("dd MM yyyy")</p>
-}
+<TextBoxComponent style="color:black;"/>
 
 @code{
 
-    List<Movie> movies;
+
+    #region WhenUseAWAIT
+    //protected async override Task OnInitializedAsync()
+
+    #endregion
+
+    private List<Movie> movies;
 
     protected override void OnInitialized()
     {
+
+        #region WaitMilliSecond
+        //await Task.Delay(100);
+
+        #endregion
+
         movies = new List<Movie>()
         {
-            new Movie(){ReleaseDate = new DateTime(2019,5,5), Title = "Spider-Man" },
+            new Movie(){ReleaseDate = new DateTime(2019,5,5), Title = "<h3>Spider-Man</h3>" },
             new Movie(){ReleaseDate = new DateTime(2017,5,5), Title = "Iron-Man" }
 
         };
     }
+
 
     string name = "Naeem";
 

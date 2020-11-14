@@ -1,0 +1,9 @@
+﻿<h3>Arbitrary Parameters</h3>
+
+<input type="text" @attributes="AdditinalParamter"/>
+
+@code {
+
+    [Parameter(CaptureUnmatchedValues = true)] public IDictionary<string, object> AdditinalParamter { get; set; }
+
+}
