@@ -1,31 +1,34 @@
 ﻿
+@*<input type="checkbox" @onchange="@(() => Display = !Display)" />*@
 
-@if (Movies == null)
-{
-    <text> Loading.. </text>
-}
-else if (Movies.Count == 0)
-{
-    <text> No Record </text>
+<input type="checkbox" @bind="@Display" />
 
+
+<GenericList List="Movies">
+    <ElementTemplate Context="movie">
+        <IndvidualMovie Movie="movie" DisplayButtons="Display" DeleteMovie="@Delete" />
+    </ElementTemplate>
+</GenericList>
+
+@if (ChildContent != null)
+{
+    @ChildContent
 }
 else
 {
-    //OnChange
-    @*<input type="checkbox" @onchange="@(() => Display = !Display)" />*@
-
-    //BindData
-    <input type="checkbox" @bind="@Display" />
-
-    @foreach (var item in Movies)
-    {
-        <IndvidualMovie Movie="item" DisplayButtons="Display"/>
-    }
+    // equal null
+    <p>Child is equal Null</p>
 }
 
 @code {
 
     [Parameter] public List<Movie> Movies { get; set; }
     bool Display = false;
+    [Parameter] public RenderFragment ChildContent { get; set; }
+
+    void Delete(Movie movie)
+    {
+        Movies.Remove(movie);
+    }
 
 }

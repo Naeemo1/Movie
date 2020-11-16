@@ -12,9 +12,22 @@
 <button @onclick="@(() => Console.WriteLine("Hi!"))">Click Me2</button>*@
 
 
-<MoviesList Movies="movies" />
+@*<MoviesList Movies="movies" >
+   <NullTemplate>
+       <span style="color:red;"> Loading</span>
+   </NullTemplate>
+   
+</MoviesList>*@
+
+<MoviesList Movies="movies" >
+    <ChildContent>
+        <span>Im HERE</span>
+    </ChildContent>
+    </MoviesList>
+    
 
 <br/>
+
 
 <TextBoxComponent style="color:black;"/>
 
@@ -28,11 +41,11 @@
 
     private List<Movie> movies;
 
-    protected override void OnInitialized()
+    protected async override Task OnInitializedAsync()
     {
 
         #region WaitMilliSecond
-        //await Task.Delay(100);
+        await Task.Delay(500);
 
         #endregion
 

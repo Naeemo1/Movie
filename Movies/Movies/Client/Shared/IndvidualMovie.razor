@@ -3,9 +3,14 @@
     <p>ReleaseDate: @Movie.ReleaseDate.ToString("dd MM yyyy")</p>
     @if (DisplayButtons == true)
     {
-        <div>
+        @*<div>
             <button @onclick="@Delete">Delete</button>
+        </div>*@
+
+        <div>
+            <button @onclick="@(() => DeleteMovie.InvokeAsync(Movie))">Delete</button>
         </div>
+
     }
 </div>
 
@@ -13,11 +18,12 @@
 
     [Parameter] public Movie Movie { get; set; }
     [Parameter] public bool DisplayButtons { get; set; } = false;
+    [Parameter] public EventCallback<Movie> DeleteMovie { get; set; }
 
-    void Delete()
-    {
-        Console.WriteLine($"Deleted: {Movie.Title} ");
+    //void Delete()
+    //{
+    //    Console.WriteLine($"Deleted: {Movie.Title} ");
 
-    }
+    //}
 
 }

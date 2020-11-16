@@ -1,0 +1,51 @@
+﻿@typeparam TItem
+
+@if (List == null)
+{
+    @if (NullTemplate != null)
+    {
+        //Show UI
+        @NullTemplate
+    }
+    else
+    {
+        //If Render == null
+        <img src="https://media0.giphy.com/media/3oEjI6SIIHBdRxXI40/200.gif" />
+    }
+}
+else if (List.Count == 0)
+{
+    @if (EmptyTemplate != null)
+    {
+        @EmptyTemplate
+    }
+    else
+    {
+        //If Render == null
+        <text> No Record </text>
+    }
+
+}
+else
+{
+    //OnChange
+    @*<input type="checkbox" @onchange="@(() => Display = !Display)" />*@
+
+    //BindData
+    @*<input type="checkbox" @bind="@Display" />*@
+
+    @foreach (var item in List)
+    {
+        @ElementTemplate(item)
+    }
+}
+
+@code {
+
+    [Parameter] public RenderFragment NullTemplate { get; set; }
+    [Parameter] public RenderFragment EmptyTemplate { get; set; }
+    [Parameter] public RenderFragment<TItem> ElementTemplate { get; set; }
+    [Parameter] public List<TItem> List { get; set; }
+
+
+}
