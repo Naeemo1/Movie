@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Movies.Client.Helper;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -18,8 +19,18 @@ namespace Movies.Client
             builder.RootComponents.Add<App>("#app");
 
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
-
+            //Important
+            ConfiguredServices(builder.Services);
             await builder.Build().RunAsync();
         }
+
+        private static void ConfiguredServices(IServiceCollection services)
+        {
+            services.AddOptions();
+            services.AddSingleton<SingletonService>();
+            services.AddTransient<TransientService>();
+            services.AddTransient<IRepository, IRMemory>();
+        }
+
     }
 }

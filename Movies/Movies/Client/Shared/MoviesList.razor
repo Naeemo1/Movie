@@ -1,7 +1,4 @@
-﻿
-@*<input type="checkbox" @onchange="@(() => Display = !Display)" />*@
-
-<input type="checkbox" @bind="@Display" />
+﻿<input type="checkbox" @bind="@Display" />
 
 
 <GenericList List="Movies">
@@ -10,25 +7,39 @@
     </ElementTemplate>
 </GenericList>
 
-@if (ChildContent != null)
-{
-    @ChildContent
-}
-else
-{
-    // equal null
-    <p>Child is equal Null</p>
-}
-
 @code {
 
     [Parameter] public List<Movie> Movies { get; set; }
     bool Display = false;
-    [Parameter] public RenderFragment ChildContent { get; set; }
+
 
     void Delete(Movie movie)
     {
         Movies.Remove(movie);
     }
+
+    protected override void OnInitialized()
+    {
+        Console.WriteLine("OnInitialized count = " + Movies.Count.ToString());
+    }
+
+    protected override void OnParametersSet()
+    {
+        Console.WriteLine("OnParametersSet count = " + Movies.Count.ToString());
+
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        Console.WriteLine("OnAfterRender First render = " + firstRender.ToString());
+
+    }
+
+    protected override bool ShouldRender()
+    {
+        return true;
+    }
+
+
 
 }

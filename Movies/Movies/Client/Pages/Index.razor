@@ -1,71 +1,39 @@
 ﻿@page "/"
+@inject IRepository rep
 
-
-@*<p>MyName Is @Upper(name)</p>
-
-<p>MyName Is @name.ToUpper()</p>
-
-<p> 2 + 2 = @(2+2)</p>
-
-<button @onclick="@Print">Click Me</button>
-
-<button @onclick="@(() => Console.WriteLine("Hi!"))">Click Me2</button>*@
-
-
-@*<MoviesList Movies="movies" >
-   <NullTemplate>
-       <span style="color:red;"> Loading</span>
-   </NullTemplate>
-   
-</MoviesList>*@
-
-<MoviesList Movies="movies" >
-    <ChildContent>
-        <span>Im HERE</span>
-    </ChildContent>
-    </MoviesList>
+<MoviesList Movies="movies" />
     
+<button @onclick="AddMovie">Add</button>
 
 <br/>
 
-
-<TextBoxComponent style="color:black;"/>
-
 @code{
-
-
-    #region WhenUseAWAIT
-    //protected async override Task OnInitializedAsync()
-
-    #endregion
 
     private List<Movie> movies;
 
-    protected async override Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
 
         #region WaitMilliSecond
-        await Task.Delay(500);
+        //await Task.Delay(200);
 
         #endregion
 
-        movies = new List<Movie>()
-        {
-            new Movie(){ReleaseDate = new DateTime(2019,5,5), Title = "<h3>Spider-Man</h3>" },
-            new Movie(){ReleaseDate = new DateTime(2017,5,5), Title = "Iron-Man" }
+        movies = rep.GetMovies();
 
-        };
+        //movies = new List<Movie>()
+        //    {
+        //        new Movie(){ReleaseDate = new DateTime(2019,5,5), Title = "<h3>Spider-Man</h3>" },
+        //        new Movie(){ReleaseDate = new DateTime(2017,5,5), Title = "Iron-Man" }
+
+        //    };
     }
 
-
-    string name = "Naeem";
-
-    string Upper(string value) => value.ToUpper();
-
-    void Print()
+    void AddMovie()
     {
-        Console.WriteLine("Hey!");
+        movies.Add(new Movie() { ReleaseDate = DateTime.Today, Title = "Iron-Man3" });
     }
+
 
 }
 
