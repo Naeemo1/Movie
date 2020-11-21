@@ -1,4 +1,6 @@
-﻿<input type="checkbox" @bind="@Display" />
+﻿@inject IJSRuntime js
+
+<input type="checkbox" @bind="@Display" />
 
 
 <GenericList List="Movies">
@@ -7,15 +9,47 @@
     </ElementTemplate>
 </GenericList>
 
+<PopUpDialog @ref="popUpDialog" OnConfirm="OnConfirm" OnCancel="OnCancel">
+    <div>Are you sure @movieToBeDeleted.Title?</div>
+    </PopUpDialog>
+
 @code {
 
+    PopUpDialog popUpDialog;
+    Movie movieToBeDeleted = null;
     [Parameter] public List<Movie> Movies { get; set; }
     bool Display = false;
 
+    #region JavaScript
+    //async Task Delete(Movie movie)
+    //{
+    //    bool confirm = await js.Confirm("Are u Sure?!");
+    //    if (confirm)
+    //    {
+    //        await js.Print("Hi");
+    //        Movies.Remove(movie);
+    //    }
+    //}
+
+    #endregion
 
     void Delete(Movie movie)
     {
-        Movies.Remove(movie);
+        popUpDialog.Show();
+        movieToBeDeleted = movie;
+    }
+
+    void OnConfirm()
+    {
+        Movies.Remove(movieToBeDeleted);
+        popUpDialog.Hide();
+        movieToBeDeleted = null;
+    }
+
+    void OnCancel()
+    {
+        popUpDialog.Hide();
+        movieToBeDeleted = null;
     }
 
     protected override void OnInitialized()
