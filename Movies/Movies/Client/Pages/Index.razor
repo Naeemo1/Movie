@@ -1,39 +1,20 @@
 ﻿@page "/"
 @inject IRepository rep
-@using static Movies.Client.Shared.MainLayout;
 
-
-<h5 style="color:@appStyle.Color;font-size:@appStyle.Size">Hi</h5>
 
 <MoviesList Movies="movies" />
 
-<button @onclick="AddMovie">Add</button>
-
-<br />
 
 @code{
 
-    [CascadingParameter] public AppStyle appStyle { get; set; }
 
     private List<Movie> movies;
 
-    protected override void OnInitialized()
+    protected async override Task OnInitializedAsync()
     {
-
-        #region WaitMilliSecond
-        //await Task.Delay(200);
-
-        #endregion
 
         movies = rep.GetMovies();
-
     }
-
-    void AddMovie()
-    {
-        movies.Add(new Movie() { ReleaseDate = DateTime.Today, Title = "Iron-Man3" });
-    }
-
 
 }
 

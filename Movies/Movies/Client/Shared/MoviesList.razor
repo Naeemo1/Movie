@@ -1,79 +1,27 @@
 ﻿@inject IJSRuntime js
 
-<input type="checkbox" @bind="@Display" />
+<div class="movies-container">
+    <GenericList List="Movies">
+        <ElementTemplate Context="movie">
+            <IndvidualMovie Movie="movie" DeleteMovie="@Delete" />
+        </ElementTemplate>
+    </GenericList>
 
+</div>
 
-<GenericList List="Movies">
-    <ElementTemplate Context="movie">
-        <IndvidualMovie Movie="movie" DisplayButtons="Display" DeleteMovie="@Delete" />
-    </ElementTemplate>
-</GenericList>
-
-<PopUpDialog @ref="popUpDialog" OnConfirm="OnConfirm" OnCancel="OnCancel">
-    <div>Are you sure @movieToBeDeleted.Title?</div>
-    </PopUpDialog>
 
 @code {
 
-    PopUpDialog popUpDialog;
-    Movie movieToBeDeleted = null;
     [Parameter] public List<Movie> Movies { get; set; }
-    bool Display = false;
 
-    #region JavaScript
-    //async Task Delete(Movie movie)
-    //{
-    //    bool confirm = await js.Confirm("Are u Sure?!");
-    //    if (confirm)
-    //    {
-    //        await js.Print("Hi");
-    //        Movies.Remove(movie);
-    //    }
-    //}
-
-    #endregion
-
-    void Delete(Movie movie)
+    async Task Delete(Movie movie)
     {
-        popUpDialog.Show();
-        movieToBeDeleted = movie;
+        bool confirm = await js.Confirm("Are u Sure?!");
+        if (confirm)
+        {
+            await js.Print("Hi");
+            Movies.Remove(movie);
+        }
     }
-
-    void OnConfirm()
-    {
-        Movies.Remove(movieToBeDeleted);
-        popUpDialog.Hide();
-        movieToBeDeleted = null;
-    }
-
-    void OnCancel()
-    {
-        popUpDialog.Hide();
-        movieToBeDeleted = null;
-    }
-
-    protected override void OnInitialized()
-    {
-        Console.WriteLine("OnInitialized count = " + Movies.Count.ToString());
-    }
-
-    protected override void OnParametersSet()
-    {
-        Console.WriteLine("OnParametersSet count = " + Movies.Count.ToString());
-
-    }
-
-    protected override void OnAfterRender(bool firstRender)
-    {
-        Console.WriteLine("OnAfterRender First render = " + firstRender.ToString());
-
-    }
-
-    protected override bool ShouldRender()
-    {
-        return true;
-    }
-
-
 
 }

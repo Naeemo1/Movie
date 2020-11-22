@@ -27,8 +27,6 @@ namespace Movies.Client
         private static void ConfiguredServices(IServiceCollection services)
         {
             services.AddOptions();
-            services.AddSingleton<SingletonService>();
-            services.AddTransient<TransientService>();
             services.AddTransient<IRepository, IRMemory>();
         }
 
