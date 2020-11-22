@@ -11,7 +11,21 @@
         </div>
 
         <div class="content px-4">
-            @Body
+            <CascadingValue Value="@appStyle">
+                @Body
+            </CascadingValue>
         </div>
     </div>
 </div>
+
+@code{
+
+    AppStyle appStyle = new AppStyle();
+
+    public class AppStyle
+    {
+        public string Color { get; set; } = "red";
+        public string Size { get; set; } = "12px";
+    }
+
+}
