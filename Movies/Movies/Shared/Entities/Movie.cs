@@ -8,6 +8,7 @@ namespace Movies.Shared.Entities
 {
     public class Movie
     {
+        public int MovieID { get; set; }
         public string Title { get; set; }
         public DateTime ReleaseDate { get; set; }
         public string Poster { get; set; }
