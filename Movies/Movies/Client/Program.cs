@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using Tewr.Blazor.FileReader;
 
 namespace Movies.Client
 {
@@ -28,6 +29,7 @@ namespace Movies.Client
         {
             services.AddOptions();
             services.AddTransient<IRepository, IRMemory>();
+            services.AddFileReaderService(op => op.InitializeOnFirstCall = true);
         }
 
     }

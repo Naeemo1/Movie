@@ -1,5 +1,5 @@
 ﻿@page "/movies/search"
-@inject IRepository rep 
+@inherits Component
 
 <h3>Search Movies</h3>
 
@@ -9,7 +9,8 @@
         <input type="text" class="form-control" id="title" placeholder="Movie Title" @bind-value="title" @bind-value:event="oninput"
                @onkeypress="@((KeyboardEventArgs e) => TitleKeyPress(e))" />
     </div>
-    <div class="form-group mx-sm-3 mb-2">
+
+    <FormGroup>
         <select class="form-control" @bind="Genreid">
             <option value="0">
                 --Select Genre--
@@ -19,21 +20,41 @@
                 <option value="@item.GenreID">@item.Name</option>
             }
         </select>
-    </div>
+    </FormGroup>
 
-    <div class="form-group mx-sm-3 mb-2">
+    @*<div class="form-group mx-sm-3 mb-2">
+        <select class="form-control" @bind="Genreid">
+            <option value="0">
+                --Select Genre--
+            </option>
+            @foreach (var item in Genres)
+            {
+                <option value="@item.GenreID">@item.Name</option>
+            }
+        </select>
+    </div>*@
+
+    <FormGroup Id="release" Title=" UpComing Release">
         <input type="checkbox" class="form-check-input" id="release" @bind="Release" />
-        <label class="form-check-label" for="release">
-            UPComing Release
-        </label>
-    </div>
+    </FormGroup>
 
-    <div class="form-group mx-sm-3 mb-2">
+    @*<div class="form-group mx-sm-3 mb-2">
+            <input type="checkbox" class="form-check-input" id="release" @bind="Release" />
+            <label class="form-check-label" for="release">
+                UPComing Release
+            </label>
+        </div>*@
+
+    @*<div class="form-group mx-sm-3 mb-2">
         <input type="checkbox" class="form-check-input" id="release" @bind="inTheater" />
         <label class="form-check-label" for="release">
             In Theater
         </label>
-    </div>
+    </div>*@
+
+    <FormGroup Id="release" Title="In Theater">
+        <input type="checkbox" class="form-check-input" id="release" @bind="inTheater" />
+    </FormGroup>
 
     <button type="button" class="btn btn-primary mb-2 mx-sm-3" @onclick="Search">Search</button>
     <button type="button" class="btn btn-danger mb-2" @onclick="Clear">Clear</button>

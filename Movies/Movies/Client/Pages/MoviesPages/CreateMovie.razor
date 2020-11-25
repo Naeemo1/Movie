@@ -1,5 +1,5 @@
 ﻿@page "/movie/create"
-@inject NavigationManager nav
+@inherits Component
 
 <h3>Create Movie</h3>
 
@@ -9,7 +9,7 @@
 
     private void Save()
     {
-        nav.NavigateTo("movie");
+        Nav.NavigateTo("movie");
     }
 
 }

@@ -1,7 +1,17 @@
 ﻿@page "/person/create"
+@inherits Component
 
-<h3>CreatePerson</h3>
+<h3>Create Person</h3>
+
+<PersonForm Person="Person" OnValidSubmit="Create" />
 
 @code {
 
+    Person Person = new Person();
+
+    private void Create()
+    {
+        Console.WriteLine("Done");
+        Nav.NavigateTo("person");
+    }
 }

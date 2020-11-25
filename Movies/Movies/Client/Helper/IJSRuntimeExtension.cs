@@ -8,9 +8,9 @@ namespace Movies.Client.Helper
 {
     public static class IJSRuntimeExtension
     {
-        public static async ValueTask<bool> Confirm(this IJSRuntime js, string meesage)
+        public static async ValueTask<bool> Confirm(this IJSRuntime js, string message)
         {
-            return await js.InvokeAsync<bool>("confirm", meesage);
+            return await js.InvokeAsync<bool>("confirm", message);
         }
 
         public static async ValueTask Print(this IJSRuntime js, string message)

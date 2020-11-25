@@ -1,0 +1,16 @@
+﻿<div class="form-group">
+        <label for="@Id" class="text-right">@Title</label>
+        <div class="">
+            @ChildContent
+        </div>
+</div>
+
+@code {
+    [Parameter]
+    public string Title { get; set; }
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+    [Parameter]
+    public string Id { get; set; } = $"_{Guid.NewGuid()}";
+
+}
