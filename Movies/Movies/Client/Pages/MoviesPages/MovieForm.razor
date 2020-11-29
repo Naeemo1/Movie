@@ -1,0 +1,76 @@
+﻿
+<EditForm Model="Movie" OnValidSubmit="OnValidSubmit">
+    <DataAnnotationsValidator />
+
+    <FormGroupSt Title="Titile:">
+        <InputText class="form-control" @bind-Value="@Movie.Title" />
+        <ValidationMessage For="@(() => Movie.Title)" />
+    </FormGroupSt>
+
+    <FormGroupSt Title="In Theater:">
+        <InputCheckbox @bind-Value="@Movie.InTheater" />
+        <ValidationMessage For="@(() => Movie.InTheater)" />
+    </FormGroupSt>
+
+    <FormGroupSt Title="Trailer:">
+        <InputText class="form-control" @bind-Value="@Movie.Trailer" />
+        <ValidationMessage For="@(() => Movie.Trailer)" />
+    </FormGroupSt>
+
+    <FormGroupSt Title="Release Date:">
+        <InputDate class="form-control" @bind-Value="@Movie.ReleaseDate" />
+        <ValidationMessage For="@(() => Movie.ReleaseDate)" />
+    </FormGroupSt>
+
+    <FormGroupSt>
+        <InputImage Label="Select Picture" OnSelectedImage="pictureSelected" ImageURL="@imageURL" />
+    </FormGroupSt>
+
+    <div class="form-group form-markdown">
+        <InputMarkdown @bind-Value="Movie.Summary" Label="Summary" For="@(() => Movie.Summary)" />
+    </div>
+
+    <div class="form-group">
+        <label>Genres:</label>
+        <div>
+            <MultipleSelector Selected="Selected" NoSelected="NoSelected"></MultipleSelector>
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save Changes</button>
+
+</EditForm>
+
+@code {
+
+    [Parameter] public Movie Movie { get; set; }
+    [Parameter] public EventCallback OnValidSubmit { get; set; }
+    private string imageURL;
+
+    [Parameter] public List<Genre> SelectedGenre { get; set; } = new List<Genre>();
+    [Parameter] public List<Genre> NotSelectedGenre { get; set; } = new List<Genre>();
+
+    public List<MultipleSelectorModel> NoSelected { get; set; } = new List<MultipleSelectorModel>();
+    public List<MultipleSelectorModel> Selected { get; set; } = new List<MultipleSelectorModel>();
+
+
+    protected override void OnInitialized()
+    {
+        Selected = SelectedGenre.Select(s => new MultipleSelectorModel(s.GenreID.ToString(), s.Name)).ToList();
+        NoSelected = NotSelectedGenre.Select(s => new MultipleSelectorModel(s.GenreID.ToString(), s.Name)).ToList();
+
+        if (!string.IsNullOrEmpty(Movie.Poster))
+        {
+            imageURL = Movie.Poster;
+            Movie.Poster = null;
+        }
+    }
+
+    private void pictureSelected(string imageBase64)
+    {
+        Movie.Poster = imageBase64;
+        imageURL = null;
+
+    }
+
+}

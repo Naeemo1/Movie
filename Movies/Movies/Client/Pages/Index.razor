@@ -1,5 +1,5 @@
 ﻿@page "/"
-@inject IRepository rep
+@inherits Component
 
 
 <MoviesList Movies="movies" />
@@ -9,6 +9,7 @@
 
 
     private List<Movie> movies;
+    private Movie Movie;
 
     protected async override Task OnInitializedAsync()
     {

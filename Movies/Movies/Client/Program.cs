@@ -1,3 +1,4 @@
+using Blazored.Modal;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -30,6 +31,7 @@ namespace Movies.Client
             services.AddOptions();
             services.AddTransient<IRepository, IRMemory>();
             services.AddFileReaderService(op => op.InitializeOnFirstCall = true);
+            services.AddBlazoredModal();
         }
 
     }

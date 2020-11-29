@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using Blazored.Modal.Services;
+using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using Movies.Client.Helper;
 using System;
@@ -16,6 +17,8 @@ namespace Movies.Client.Basment
         [Inject] protected NavigationManager Nav { get; set; }
         [Inject] protected IRepository rep { get; set; }
         [Inject] protected IFileReaderService fileReaderService { get; set; }
+        [Inject] protected IModalService Popup { get; set; }
+
 
         #endregion
 
