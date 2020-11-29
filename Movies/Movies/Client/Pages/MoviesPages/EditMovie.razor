@@ -1,10 +1,10 @@
-﻿@page "/movie/{MovieID:int}"
+﻿@page "/movie/edit/{MovieID:int}"
 
 
 <h3>Edit Movies</h3>
 @if (Movie != null)
 {
-    <MovieForm Movie="Movie" OnValidSubmit="Edit"/>
+    <MovieForm Movie="Movie" OnValidSubmit="Edit" NotSelectedGenre="NotSelctedGenres" SelectedGenre="SelctedGenres"/>
 }
 
 @code {
@@ -13,9 +13,21 @@
     //[Parameter] public string MovieName { get; set; }
     private Movie Movie;
 
+    private List<Genre> NotSelctedGenres = new List<Genre>()
+    {
+        new Genre(){GenreID = 2, Name ="Comedy"},
+        new Genre(){GenreID = 3, Name ="Drama"}
+    };
+
+    private List<Genre> SelctedGenres = new List<Genre>()
+    {
+        new Genre(){GenreID = 1, Name ="Action"}
+    };
+
+
     protected override void OnInitialized()
     {
-        Console.WriteLine($"ID = {MovieID}");
+        Movie = new Movie() { MovieID = MovieID, Title = "IronMan", InTheater = true };
     }
 
     private void Edit()
