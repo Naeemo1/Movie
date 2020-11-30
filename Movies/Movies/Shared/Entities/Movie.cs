@@ -1,14 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Movies.Shared.Entities
 {
+    [Table(nameof(Movie))]
     public class Movie
     {
+        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int MovieID { get; set; }
         [Required]
         public string Title { get; set; }
