@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Movies.Client.Helper;
+using Movies.Client.Repository;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -30,6 +31,11 @@ namespace Movies.Client
         {
             services.AddOptions();
             services.AddTransient<IRepository, IRMemory>();
+
+            services.AddScoped<IHttpService, HttpService>();
+            services.AddScoped<IGenreRepository, GenreRepository>();
+            services.AddScoped<IRepositoryPerson, RepositoryPerson>();
+            services.AddScoped<IMoviesRepository, MoviesRepository>();
             services.AddFileReaderService(op => op.InitializeOnFirstCall = true);
             services.AddBlazoredModal();
         }

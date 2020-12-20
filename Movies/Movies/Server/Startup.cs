@@ -1,3 +1,4 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -6,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Movies.Server.Helpers;
 using System.Linq;
 
 namespace Movies.Server
@@ -25,6 +27,9 @@ namespace Movies.Server
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ApplicationDbContext>(op => op.UseSqlServer(Configuration.GetConnectionString("ApplicationDbContext")));
+            services.AddScoped<IFileStorageService, InAppStorageService>();
+            services.AddAutoMapper(typeof(Startup));
+            services.AddHttpContextAccessor();
             services.AddControllersWithViews();
             services.AddRazorPages();
         }

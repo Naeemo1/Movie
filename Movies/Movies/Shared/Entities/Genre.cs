@@ -16,7 +16,7 @@ namespace Movies.Shared.Entities
 
         [Required(ErrorMessage = "Enter Name")]
         public string Name { get; set; }
-     
+
         public List<MoviesGenres> MoviesGenres { get; set; } = new List<MoviesGenres>();
 
     }

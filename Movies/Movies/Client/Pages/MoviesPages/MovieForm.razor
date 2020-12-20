@@ -1,5 +1,5 @@
 ﻿
-<EditForm Model="Movie" OnValidSubmit="OnValidSubmit">
+<EditForm Model="Movie" OnValidSubmit="OnValidSubmitAction">
     <DataAnnotationsValidator />
 
     <FormGroupSt Title="Titile:">
@@ -23,7 +23,7 @@
     </FormGroupSt>
 
     <FormGroupSt>
-        <InputImage Label="Select Picture" OnSelectedImage="pictureSelected" ImageURL="@imageURL" />
+        <InputImage Label="SelectPicture" OnSelectedImage="@pictureSelected" ImageURL="@imageURL" />
     </FormGroupSt>
 
     <div class="form-group form-markdown">
@@ -71,6 +71,18 @@
         Movie.Poster = imageBase64;
         imageURL = null;
 
+    }
+
+    private async Task OnValidSubmitAction()
+    {
+        Movie.MoviesGenres = Selected.Select(x => new MoviesGenres { GenresID = int.Parse(x.Key) }).ToList();
+
+        if (!string.IsNullOrWhiteSpace(Movie.Poster))
+        {
+            imageURL = null;
+        }
+
+        await OnValidSubmit.InvokeAsync(null);
     }
 
 }

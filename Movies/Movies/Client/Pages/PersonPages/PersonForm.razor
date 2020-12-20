@@ -1,5 +1,6 @@
 ﻿@inherits Component
 
+
 <EditForm Model="Person" OnValidSubmit="OnValidSubmit">
     <DataAnnotationsValidator />
 
@@ -15,6 +16,7 @@
 
     <FormGroupSt>
         <InputImage Label="Select Picture" OnSelectedImage="pictureSelected" ImageURL="@imageURL" />
+        @*<ImageComponent Label="Picture" OnSelectedImage="OnSelect" ImageURL="@imageURL"/>*@
     </FormGroupSt>
        
     <div class="form-group form-markdown">
@@ -37,6 +39,7 @@
     [Parameter] public Person Person { get; set; }
     [Parameter] public EventCallback OnValidSubmit { get; set; }
     string imageURL;
+    List<string> Image = new List<string>();
 
     protected override void OnInitialized()
     {
@@ -47,9 +50,19 @@
         }
     }
 
-    private void pictureSelected(string imageBase64)
+    void OnSelect(string imageBase64)
     {
         Person.Picture = imageBase64;
+        imageURL = null;
+
+    }
+
+    private void pictureSelected(string imageBase64)
+    {
+
+        Person.Picture = imageBase64;
+
+        //Person.Picture = imageBase64;
         imageURL = null;
         Console.WriteLine(imageBase64);
     }

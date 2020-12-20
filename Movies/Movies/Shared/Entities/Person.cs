@@ -18,5 +18,7 @@ namespace Movies.Shared.Entities
         public string Picture { get; set; }
         [Required]
         public DateTime? DateOfBirth { get; set; }
+        [NotMapped]
+        public string Character { get; set; }
     }
 }

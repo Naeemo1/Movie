@@ -1,5 +1,6 @@
 ﻿@page "/person/create"
 @inherits Component
+@inject IRepositoryPerson personRep
 
 <h3>Create Person</h3>
 
@@ -9,9 +10,18 @@
 
     Person Person = new Person();
 
-    private void Create()
+    private async Task Create()
     {
-        Console.WriteLine("Done");
-        Nav.NavigateTo("person");
+
+        try
+        {
+            await personRep.CreatePerson(Person);
+            Nav.NavigateTo("person");
+        }
+        catch (Exception e)
+        {
+
+            Console.WriteLine(e.Message);
+        }
     }
 }
