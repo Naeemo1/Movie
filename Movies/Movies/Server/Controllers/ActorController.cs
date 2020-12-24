@@ -1,6 +1,7 @@
 ﻿
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Movies.Server.Helpers;
 using Movies.Shared.Entities;
 using System;
@@ -25,6 +26,13 @@ namespace Movies.Server.Controllers
             this.context = context;
             this.fileStorageService = fileStorage;
             this.mapper = mapper;
+        }
+
+
+        [HttpGet]
+        public async Task<ActionResult<List<Person>>> GetPerson()
+        {
+            return await context.Actors.ToListAsync();
         }
 
         [HttpPost]

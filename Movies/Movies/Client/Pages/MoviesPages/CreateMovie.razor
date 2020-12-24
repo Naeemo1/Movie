@@ -1,29 +1,33 @@
 ﻿@page "/movie/create"
 @inherits Component
 @inject IMoviesRepository rep
+@inject IGenreRepository repGenre
 
 <h3>Create Movie</h3>
 
-<MovieForm Movie="Movie"  OnValidSubmit="SaveMovie" NotSelectedGenre="NotSelctedGenres"/>
+@if (NotSelctedGenres != null)
+{
+    <MovieForm Movie="Movie" OnValidSumbit="SaveMovie" NotSelectedGenres="NotSelctedGenres" />
+}
 
 @*<button class="btn btn-primary" @onclick="Save">Save</button>*@
 
 @code {
 
     private Movie Movie = new Movie();
-    private List<Genre> NotSelctedGenres = new List<Genre>()
+    private List<Genre> NotSelctedGenres;
+
+    protected override async Task OnInitializedAsync()
     {
-        new Genre(){GenreID = 1, Name ="Action"},
-        new Genre(){GenreID = 2, Name ="Comedy"},
-        new Genre(){GenreID = 3, Name ="Drama"}
-    };
+        NotSelctedGenres = await repGenre.GetGenres();
+    }
 
     private async Task SaveMovie()
     {
         try
         {
             var moveID = await rep.CreateMovie(Movie);
-            Nav.NavigateTo($"movie/edit/{moveID}/{Movie.Title.Replace(" ", "-")}");
+            Nav.NavigateTo($"movie/details/{moveID}/{Movie.Title.Replace(" ", "-")}");
 
         }
         catch (Exception)

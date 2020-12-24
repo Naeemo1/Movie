@@ -17,6 +17,20 @@ namespace Movies.Client.Repository
             this.httpService = httpService;
         }
 
+        public async Task<List<Person>> GetPersons()
+        {
+            var response = await httpService.Get<List<Person>>(url);
+
+            if (!response.Success)
+            {
+                throw new ApplicationException(await response.GetBody());
+            }
+            else
+            {
+                return response.Response;
+            }
+        }
+
         public async Task CreatePerson(Person person)
         {
             var response = await httpService.Post(url, person);

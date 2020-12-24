@@ -1,4 +1,6 @@
-﻿
+﻿@inject IRepositoryPerson personRepository
+
+
 <EditForm Model="Movie" OnValidSubmit="OnValidSubmitAction">
     <DataAnnotationsValidator />
 
@@ -23,7 +25,7 @@
     </FormGroupSt>
 
     <FormGroupSt>
-        <InputImage Label="SelectPicture" OnSelectedImage="@pictureSelected" ImageURL="@imageURL" />
+        <InputImage Label="SelectPicture" OnSelectedImage="@PosterSelected" ImageURL="@imageURL" />
     </FormGroupSt>
 
     <div class="form-group form-markdown">
@@ -31,11 +33,27 @@
     </div>
 
     <div class="form-group">
-        <label>Genres:</label>
+        <MultipleSelector NoSelected="NotSelected" Selected="Selected" >
+
+        </MultipleSelector>
+    </div>
+
+    <div class="form-group">
+        <label>Actors:</label>
         <div>
-            <MultipleSelector Selected="Selected" NoSelected="NoSelected"></MultipleSelector>
+            <MultipleSelectorTypeahead Context="person" SelectedElements="SelectedActors">
+                <MyResultTemplate>
+                    <img src="@person.Picture" style="width:50px;" />
+                    @person.Name
+                </MyResultTemplate>
+                <MyListTemplate>
+                    @person.Name / <input type="text" placeholder="Character" @bind="person.Character" />
+                </MyListTemplate>
+            </MultipleSelectorTypeahead>
         </div>
     </div>
+
+
 
     <button type="submit" class="btn btn-primary">Save Changes</button>
 
@@ -44,20 +62,20 @@
 @code {
 
     [Parameter] public Movie Movie { get; set; }
-    [Parameter] public EventCallback OnValidSubmit { get; set; }
+    [Parameter] public EventCallback OnValidSumbit { get; set; }
+    [Parameter] public List<Genre> SelectedGenres { get; set; } = new List<Genre>();
+    [Parameter] public List<Genre> NotSelectedGenres { get; set; } = new List<Genre>();
+    [Parameter] public List<Person> SelectedActors { get; set; } = new List<Person>();
+
+    private List<MultipleSelectorModel> Selected = new List<MultipleSelectorModel>();
+    private List<MultipleSelectorModel> NotSelected = new List<MultipleSelectorModel>();
+
     private string imageURL;
-
-    [Parameter] public List<Genre> SelectedGenre { get; set; } = new List<Genre>();
-    [Parameter] public List<Genre> NotSelectedGenre { get; set; } = new List<Genre>();
-
-    public List<MultipleSelectorModel> NoSelected { get; set; } = new List<MultipleSelectorModel>();
-    public List<MultipleSelectorModel> Selected { get; set; } = new List<MultipleSelectorModel>();
-
 
     protected override void OnInitialized()
     {
-        Selected = SelectedGenre.Select(s => new MultipleSelectorModel(s.GenreID.ToString(), s.Name)).ToList();
-        NoSelected = NotSelectedGenre.Select(s => new MultipleSelectorModel(s.GenreID.ToString(), s.Name)).ToList();
+        Selected = SelectedGenres.Select(x => new MultipleSelectorModel(x.GenreID.ToString(), x.Name)).ToList();
+        NotSelected = NotSelectedGenres.Select(x => new MultipleSelectorModel(x.GenreID.ToString(), x.Name)).ToList();
 
         if (!string.IsNullOrEmpty(Movie.Poster))
         {
@@ -66,23 +84,24 @@
         }
     }
 
-    private void pictureSelected(string imageBase64)
+    private void PosterSelected(string imageBase64)
     {
         Movie.Poster = imageBase64;
         imageURL = null;
-
+        Console.WriteLine(imageBase64);
     }
 
     private async Task OnValidSubmitAction()
     {
-        Movie.MoviesGenres = Selected.Select(x => new MoviesGenres { GenresID = int.Parse(x.Key) }).ToList();
+        Movie.MoviesGenres = Selected
+             .Select(x => new MoviesGenres { GenresID = int.Parse(x.Key) }).ToList();
 
-        if (!string.IsNullOrWhiteSpace(Movie.Poster))
-        {
-            imageURL = null;
-        }
+        Movie.MoviesActors = SelectedActors
+            .Select(x => new MoviesActors { PersonID = x.PersonID, Character = x.Character }).ToList();
 
-        await OnValidSubmit.InvokeAsync(null);
+        if (!string.IsNullOrWhiteSpace(Movie.Poster)) { imageURL = null; }
+
+        await OnValidSumbit.InvokeAsync(null);
     }
 
 }

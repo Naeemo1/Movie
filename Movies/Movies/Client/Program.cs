@@ -35,7 +35,7 @@ namespace Movies.Client
             services.AddScoped<IHttpService, HttpService>();
             services.AddScoped<IGenreRepository, GenreRepository>();
             services.AddScoped<IRepositoryPerson, RepositoryPerson>();
-            services.AddScoped<IMoviesRepository, MoviesRepository>();
+            services.AddScoped<IMoviesRepository, MoviesRepository>();         
             services.AddFileReaderService(op => op.InitializeOnFirstCall = true);
             services.AddBlazoredModal();
         }

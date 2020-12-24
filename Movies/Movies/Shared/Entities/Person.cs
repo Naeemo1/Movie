@@ -18,6 +18,9 @@ namespace Movies.Shared.Entities
         public string Picture { get; set; }
         [Required]
         public DateTime? DateOfBirth { get; set; }
+
+        public List<MoviesActors> MoviesActors { get; set; } = new List<MoviesActors>();
+
         [NotMapped]
         public string Character { get; set; }
     }

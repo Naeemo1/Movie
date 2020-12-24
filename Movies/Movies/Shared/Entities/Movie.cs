@@ -42,6 +42,7 @@ namespace Movies.Shared.Entities
         }
 
         public List<MoviesGenres> MoviesGenres { get; set; } = new List<MoviesGenres>();
+        public List<MoviesActors> MoviesActors { get; set; } = new List<MoviesActors>();
 
     }
 }
