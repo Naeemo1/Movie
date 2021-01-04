@@ -3,7 +3,7 @@
     <label>@Label</label>
     <div>
         @*multiple*@
-        <InputFile accept=".jpg,.png,.jpeg" OnChange="OnChange" />
+        <InputFile accept=".jpg,.png,.jpeg" OnChange="OnChange" multiple />
     </div>
 </div>
 
@@ -13,8 +13,10 @@
 
         <div>
             <div style="margin:10px;">
-
-                <img src="data:image/jpeg;base64, @imageBase64" style="width:400px;" />
+                @foreach (var img in images)
+                {
+                   <img src="data:image/jpeg;base64, @img" style="width:400px;" />
+                }
 
             </div>
         </div>
@@ -25,8 +27,10 @@
 
         <div>
             <div style="margin:10px;">
-
-                <img src="@ImageURL" style="width:400px;" />
+                @foreach (var item in ImageURL)
+                {
+                    <img src="@item" style="width:400px;" />
+                }
 
             </div>
         </div>
@@ -37,9 +41,10 @@
 
     [Parameter] public string Label { get; set; } = "Picture";
     [Parameter] public EventCallback<string> OnSelectedImage { get; set; }
-    [Parameter] public string ImageURL { get; set; }
+    [Parameter] public List<string> ImageURL { get; set; }
 
     private string imageBase64;
+    List<string> images = new List<string>();
 
     async Task OnChange(InputFileChangeEventArgs e)
     {
@@ -50,7 +55,12 @@
             var buffer = new byte[image.Size];
             await image.OpenReadStream().ReadAsync(buffer);
             imageBase64 = Convert.ToBase64String(buffer);
-            await OnSelectedImage.InvokeAsync(imageBase64);
+            images.Add(imageBase64);
+            foreach (var img in images)
+            {
+                await OnSelectedImage.InvokeAsync(img);
+
+            }
             ImageURL = null;
             StateHasChanged();
 

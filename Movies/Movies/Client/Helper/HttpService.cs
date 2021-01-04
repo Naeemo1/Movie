@@ -19,6 +19,34 @@ namespace Movies.Client.Helper
             this.httpClient = httpClient;
         }
 
+        public async Task<HttpResponseWrapper<T>> GetFilesAsync<T>(string url)
+        {
+            try
+            {
+
+
+                var response = await httpClient.GetAsync($"{url}");
+                string content = await response.Content.ReadAsStringAsync();
+                if (response.IsSuccessStatusCode == true)
+                {
+                    var responseDeserialize = await Deserialize<T>(response, defaultJsonSerializerOptions);
+                    return new HttpResponseWrapper<T>(responseDeserialize, true, response);
+                }
+                else
+                {
+                    throw new Exception(content);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+
+        }
+
+
         public async Task<HttpResponseWrapper<T>> Get<T>(string url)
         {
             var response = await httpClient.GetAsync(url);

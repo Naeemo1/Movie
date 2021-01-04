@@ -31,6 +31,20 @@ namespace Movies.Client.Repository
             }
         }
 
+        public async Task<IEnumerable<string>> GetImages()
+        {
+            var response = await httpService.GetFilesAsync<IEnumerable<string>>("api/GetFiles");
+
+            if (!response.Success)
+            {
+                throw new ApplicationException(await response.GetBody());
+            }
+            else
+            {
+                return response.Response;
+            }
+        }
+
         public async Task CreatePerson(Person person)
         {
             var response = await httpService.Post(url, person);

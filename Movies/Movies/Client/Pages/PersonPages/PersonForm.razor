@@ -1,5 +1,5 @@
 ﻿@inherits Component
-
+@inject IRepositoryPerson rep
 
 <EditForm Model="Person" OnValidSubmit="OnValidSubmit">
     <DataAnnotationsValidator />
@@ -15,12 +15,12 @@
     </FormGroupSt>
 
     <FormGroupSt>
-        <InputImage Label="Select Picture" OnSelectedImage="pictureSelected" ImageURL="@imageURL" />
-        @*<ImageComponent Label="Picture" OnSelectedImage="OnSelect" ImageURL="@imageURL"/>*@
+        @* <InputImage Label="Select Picture" OnSelectedImage="pictureSelected" ImageURL="@imageURL" />*@
+        <ImageComponent Label="Picture" OnSelectedImage="OnSelect" ImageURL="@imageURL" />
     </FormGroupSt>
-       
+
     <div class="form-group form-markdown">
-       <InputMarkdown @bind-Value="Person.Biography" Label="Biography" For="@(() => Person.Biography)"/>
+        <InputMarkdown @bind-Value="Person.Biography" Label="Biography" For="@(() => Person.Biography)" />
     </div>
 
     @if (Nav.Uri.Contains("edit"))
@@ -38,21 +38,28 @@
 
     [Parameter] public Person Person { get; set; }
     [Parameter] public EventCallback OnValidSubmit { get; set; }
-    string imageURL;
+    List<string> imageURL;
     List<string> Image = new List<string>();
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-        if (!string.IsNullOrEmpty(Person.Picture))
+        try
         {
-            imageURL = Person.Picture;
-            Person.Picture = null;
+            imageURL = (await rep.GetImages()).ToList();
+
+         }
+        catch (Exception e)
+        {
+
+            Console.WriteLine(e);
         }
     }
 
     void OnSelect(string imageBase64)
     {
-        Person.Picture = imageBase64;
+
+        Image.Add(imageBase64);
+        Person.Picture = Image;
         imageURL = null;
 
     }
@@ -60,7 +67,7 @@
     private void pictureSelected(string imageBase64)
     {
 
-        Person.Picture = imageBase64;
+        //Person.Picture = imageBase64;
 
         //Person.Picture = imageBase64;
         imageURL = null;

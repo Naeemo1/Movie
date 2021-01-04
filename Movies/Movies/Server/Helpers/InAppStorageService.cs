@@ -31,17 +31,17 @@ namespace Movies.Server.Helpers
             return Task.FromResult(0);
         }
 
-        public async Task<string> EditFile(byte[] content, string extension, string containerName, string fileRoute)
+        public async Task EditFile(byte[] content, string extension, string containerName, string fileRoute)
         {
             if (!string.IsNullOrEmpty(fileRoute))
             {
                 await DeleteFile(fileRoute, containerName);
             }
 
-            return await SaveFile(content, extension, containerName);
+             await SaveFile(content, extension, containerName);
         }
 
-        public async Task<string> SaveFile(byte[] content, string extension, string containerName)
+        public async Task SaveFile(byte[] content, string extension, string containerName)
         {
             var fileName = $"{Guid.NewGuid()}.{extension}";
             string folder = Path.Combine(env.WebRootPath, containerName);
@@ -54,9 +54,9 @@ namespace Movies.Server.Helpers
             string savingPath = Path.Combine(folder, fileName);
             await File.WriteAllBytesAsync(savingPath, content);
 
-            var currentUrl = $"{httpContextAccessor.HttpContext.Request.Scheme}://{httpContextAccessor.HttpContext.Request.Host}";
-            var pathForDatabase = Path.Combine(currentUrl, containerName, fileName);
-            return pathForDatabase;
+            //var currentUrl = $"{httpContextAccessor.HttpContext.Request.Scheme}://{httpContextAccessor.HttpContext.Request.Host}";
+            //var pathForDatabase = Path.Combine(currentUrl, containerName, fileName);
+            //return pathForDatabase;
 
         }
     }

@@ -32,7 +32,7 @@ namespace Movies.Server.Controllers
             if (!string.IsNullOrWhiteSpace(movie.Poster))
             {
                 var movieImage = Convert.FromBase64String(movie.Poster);
-                movie.Poster = await fileStorageService.SaveFile(movieImage, "jpg", ContainerName);
+                await fileStorageService.SaveFile(movieImage, "jpg", ContainerName);
             }
 
             context.Add(movie);

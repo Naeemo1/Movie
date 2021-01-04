@@ -6,6 +6,7 @@ using Movies.Server.Helpers;
 using Movies.Shared.Entities;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -35,13 +36,41 @@ namespace Movies.Server.Controllers
             return await context.Actors.ToListAsync();
         }
 
+        [HttpGet]
+        [Route("/api/GetFiles")]
+        public IEnumerable<string> GetFiles()
+        {
+            try
+            {
+                var path = Path.Combine($"wwwroot/actor");
+                var files = System.IO.Directory.GetFiles(path, "*.*", SearchOption.TopDirectoryOnly);
+
+                List<string> vs = new List<string>();
+                foreach (string item in files)
+                {
+                    //string fileName = System.IO.Path.GetFileName(item);
+                    string fileName = item.Split(new string[] { "wwwroot" }, StringSplitOptions.None)[1];
+                    vs.Add(fileName);
+                }
+                return vs;
+            }
+            catch (Exception)
+            {
+                return new List<string>();
+            }
+        }
+
         [HttpPost]
         public async Task<ActionResult<int>> Post(Person person)
         {
-            if (!string.IsNullOrWhiteSpace(person.Picture))
+            if (person.Picture !=null)
             {
-                var personImage = Convert.FromBase64String(person.Picture);
-                person.Picture = await fileStorageService.SaveFile(personImage, "jpg", ContainerName);
+                foreach (var item in person.Picture.Distinct())
+                {
+                    var personImage = Convert.FromBase64String(item);
+                    await fileStorageService.SaveFile(personImage, "jpg", ContainerName);
+                }
+                
             }
 
             context.Add(person);
